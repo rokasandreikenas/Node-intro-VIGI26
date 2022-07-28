@@ -5,6 +5,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "casual": "^1.6.2"
+    "casual": "^1.6.2",
+    "uuid": "^7.0.2"
   }
 }
