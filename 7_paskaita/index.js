@@ -24,4 +24,15 @@ app.get("/", async (req, res) => {
   }
 });
 
+app.post("/", async (req, res) => {
+  try {
+    const con = await client.connect();
+    const dbRes = await con.db("demo1").collection("cars").insertOne(req.body);
+    await con.close();
+    return res.send(dbRes);
+  } catch (err) {
+    res.status(500).send({ err });
+  }
+});
+
 app.listen(port, () => console.log(`Server is running on port ${port}`));
