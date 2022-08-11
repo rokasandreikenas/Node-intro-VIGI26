@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
+    />
+    <style>
+      button.selected {
+        background: red;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="add.html">Add pet</a>
+    <h1>Pets</h1>
+
+    <button class="selected">Dog</button>
+    <button class="selected">Cat</button>
+    <button class="selected">Bunny</button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th id="age">Age (Asc)</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <script>
+      let orderSelection = "asc";
+      let petSelection = ["dog", "cat", "bunny"];
+
+      function dataDisplay(data) {
+        const table = document.querySelector("tbody");
+        table.innerHTML = "";
+
+        data.forEach((pet) => {
+          const tr = table.insertRow();
+
+          const td1 = tr.insertCell();
+          td1.textContent = pet.name;
+
+          const td2 = tr.insertCell();
+          td2.textContent = pet.type;
+
+          const td3 = tr.insertCell();
+          td3.textContent = pet.age;
+        });
+      }
+
+      fetch("http://localhost:3000/pets")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          dataDisplay(data);
+        });
+
+      document.getElementById("age").addEventListener("click", (e) => {
+        const text = e.target.textContent;
+        if (text.includes("Asc")) {
+          e.target.textContent = text.replace("Asc", "Dsc");
+          fetch("http://localhost:3000/pets/dsc")
+            .then((res) => res.json())
+            .then((data) => dataDisplay(data));
+        } else {
+          e.target.textContent = text.replace("Dsc", "Asc");
+          fetch("http://localhost:3000/pets/asc")
+            .then((res) => res.json())
+            .then((data) => dataDisplay(data));
+        }
+      });
+
+      document.querySelectorAll("button").forEach((button) =>
+        button.addEventListener("click", (e) => {
+          e.target.classlist.toggle("selected");
+        })
+      );
+    </script>
+  </body>
+</html>
