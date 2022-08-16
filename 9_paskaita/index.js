@@ -26,6 +26,30 @@ const orders = [
 // -1 nuo didžiausio iki mažiausio
 // { $match: { customer: {$in: ['Mike', 'Karen']} } },
 
+app.get("/fullCustomers", async (req, res) => {
+  try {
+    const con = await client.connect();
+    const data = await con
+      .db("9paskaita")
+      .collection("customers")
+      .aggregate([
+        {
+          $lookup: {
+            from: "orders", // kolekcija iš kurios nori imti
+            localField: "name", //  .collection("") property
+            foreignField: "customer", // from: "customers" property
+            as: "orders", // kaip norim pavadinti savo sujungima
+          },
+        },
+      ])
+      .toArray();
+    await con.close();
+    res.send(data);
+  } catch (error) {
+    res.status(500).send({ error });
+  }
+});
+
 app.get("/fullOrders", async (req, res) => {
   try {
     const con = await client.connect();
@@ -57,8 +81,8 @@ app.get("/spent/:customer", async (req, res) => {
       .db("9paskaita")
       .collection("orders")
       .aggregate([
-        { $match: { customer: req.params.customer } },
-        { $group: { _id: "$product", total: { $sum: "$total" } } },
+        { $match: { customer: req.params.customer } }, // customer: "Dave"
+        { $group: { _id: "$product", total: { $sum: "$total" } } }, // musu nauja struktura
         { $sort: { total: 1 } },
       ])
       .toArray();
@@ -90,9 +114,9 @@ app.get("/count/:product", async (req, res) => {
     const data = await con
       .db("9paskaita")
       .collection("orders")
-      .count({ product: req.params.product });
+      .count({ product: req.params.product }); // kintanti
     await con.close();
-    res.send({ count: data });
+    res.send({ count: data }); // kintanti
   } catch (error) {
     res.status(500).send({ error });
   }
