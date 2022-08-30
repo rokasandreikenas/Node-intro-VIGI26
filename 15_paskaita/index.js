@@ -5,13 +5,7 @@ const PORT = 3000;
 const app = express();
 app.use(express.json());
 
-const mysqlConfig = {
-  host: "mysql-vigi26-do-user-12295531-0.b.db.ondigitalocean.com",
-  user: "doadmin",
-  password: "AVNS_cvmYKyTrDF7jy4dOjn6",
-  database: "products",
-  port: "25060",
-};
+// missing .env file
 
 app.get("/", async (req, res) => {
   try {
