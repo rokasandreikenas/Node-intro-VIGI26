@@ -2,8 +2,10 @@ const express = require('express');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.send('Route');
+const { isLoggedIn } = require('../../middleware');
+
+router.get('/', isLoggedIn, (req, res) => {
+  res.send({ data: ['Harry Potter'] });
 });
 
 module.exports = router;

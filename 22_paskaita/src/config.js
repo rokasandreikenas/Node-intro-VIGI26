@@ -2,6 +2,7 @@ require('dotenv').config();
 
 module.exports = {
   port: process.env.PORT || 8080,
+  jwtSecret: process.env.JWT_SECRET,
   dbconfig: {
     host: process.env.MY_SQL_HOST,
     user: process.env.MY_SQL_USER,
