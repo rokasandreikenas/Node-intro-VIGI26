@@ -13,4 +13,13 @@ module.exports = {
       res.status(401).send({ error: 'Invalid token' });
     }
   },
+  isAuthenticated: async (req) => {
+    try {
+      const token = req.headers.authorization?.split(' ')[1];
+      jwt.verify(token, jwtSecret);
+      return true;
+    } catch {
+      return false;
+    }
+  },
 };
