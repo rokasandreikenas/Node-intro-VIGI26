@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= header %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <% include partials/header %>
+      <div class="articles">
+        <% articles.forEach((article) => { %>
+        <div class="card">
+          <div class="image">
+            <img src="<%= article.image_url %>" />
+          </div>
+          <div class="text">
+            <h2><%= article.title %></h2>
+            <p class="description"><%= article.description %></p>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </body>
+</html>
